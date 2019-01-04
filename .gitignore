@@ -7,8 +7,10 @@
 # Ignore bundler config.
 /.bundle
 
+/coverage/index.html
 /coverage.data
 /coverage/
+coverage/
 
 # Ignore all logfiles and tempfiles.
 /log/*
