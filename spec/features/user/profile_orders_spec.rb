@@ -98,10 +98,23 @@ RSpec.describe 'Profile Orders page', type: :feature do
           expect(page).to have_content("Quantity: #{@oi_2.quantity}")
           expect(page).to have_content("Subtotal: #{number_to_currency(@oi_2.price*@oi_2.quantity)}")
           expect(page).to have_content("Fulfilled: Yes")
+          expect(page).to have_content("Leave a Review")
         end
         expect(page).to have_content("Item Count: #{@order.total_item_count}")
         expect(page).to have_content("Total Cost: #{number_to_currency(@order.total_cost)}")
       end
+    end
+    it 'displays review button on order show page' do
+      yesterday = 1.day.ago
+      @order = create(:order, user: @user, created_at: yesterday)
+      @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 3, created_at: yesterday, updated_at: yesterday)
+      @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 5, created_at: yesterday, updated_at: 2.hours.ago)
+
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      visit profile_order_path(@order)
+
+      click_button "Leave a Review"
+      expect(current_path).to eq(new_item_review_path(@item_2))
     end
     describe 'allows me to cancel an order that is not yet complete' do
       before :each do
