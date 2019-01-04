@@ -21,6 +21,33 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def show
+    @review = Review.find(params[:id])
+    @item = @review.item
+    @review.user = current_user
+  end
+
+  def edit
+    @review = Review.find(params[:id])
+    @item = @review.item
+    @review.user = current_user
+  end
+
+  def update
+    @review = Review.find(params[:id])
+    @item = @review.item
+    @review.user = current_user
+    if @review.update(review_params)
+      flash[:notice] = "Your review was successfully posted."
+      redirect_to item_review_path(@item, @review)
+    else
+      flash[:notice] = unless @review.errors.messages[:email].empty?
+        "There was a problem submitting your review. Please try again with valid information."
+      end
+      render :edit
+    end
+  end
+
   private
 
   def review_params

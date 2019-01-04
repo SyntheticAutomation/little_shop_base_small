@@ -41,4 +41,28 @@ describe 'A registered user who visits our web app' do
     expect(current_path).to eq(item_path(@item_1))
     expect(page).to have_content(description)
   end
+  it 'can edit a review' do
+    @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
+    visit item_path(@item_1)
+
+    click_link(@review.title)
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+
+    click_button("Edit Review")
+    expect(current_path).to eq(edit_item_review_path(@item_1, @review))
+
+    title = "Horrible!"
+    description = "waste of my life to purchase this item. it did nothing for me"
+    rating = 1
+
+    fill_in :review_title, with: title
+    fill_in :review_description, with: description
+    fill_in :review_rating, with: rating
+
+    click_on ("Update Review")
+
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+    expect(page).to have_content(description)
+
+  end
 end
