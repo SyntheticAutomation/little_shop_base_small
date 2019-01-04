@@ -63,6 +63,14 @@ describe 'A registered user who visits our web app' do
 
     expect(current_path).to eq(item_review_path(@item_1, @review))
     expect(page).to have_content(description)
+  end
+  it 'cannot edit a review they didnt write' do
+    @user_1 = create(:user)
+    @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user_1)
+    visit item_path(@item_1)
 
+    click_link(@review.title)
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+    expect(page).to_not have_content("Edit Review")
   end
 end
