@@ -24,7 +24,7 @@ class ReviewsController < ApplicationController
   def show
     @review = Review.find(params[:id])
     @item = @review.item
-    @review.user = current_user
+    @current_user = current_user
   end
 
   def edit

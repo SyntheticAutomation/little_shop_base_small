@@ -13,7 +13,7 @@ Merchant is out of stock, sorry
 <% end %>
 
 <div class="reviews">
-  <h1><%= @item.name %>'s Reviews</h1>
+  <h1>Reviews</h1>
   <% @item.reviews.each_with_index do |r, idx| %>
     <h5>Review <%= idx + 1 %>: <%= link_to "#{r.title}", item_review_path(@item, r), method: :get %> - <%=  pluralize(r.rating, "star") %></h5>
     <p>by: <%= r.user.name %></p>

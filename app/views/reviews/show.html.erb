@@ -1,4 +1,6 @@
 <h5><%= link_to "#{@review.title}", item_review_path(@item, @review), method: :get %> - <%=  pluralize(@review.rating, "star") %></h5>
 <p>by: <%= @review.user.name %></p>
 <p id="review-description"> "<%= @review.description %>" </p>
-<%= button_to "Edit Review", edit_item_review_path(@item, @review), method: :get %>
+<% if @current_user == @review.user %>
+  <%= button_to "Edit Review", edit_item_review_path(@item, @review), method: :get %>
+<% end %>
