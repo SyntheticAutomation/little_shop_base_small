@@ -103,6 +103,36 @@ RSpec.describe 'Profile Orders page', type: :feature do
         expect(page).to have_content("Total Cost: #{number_to_currency(@order.total_cost)}")
       end
     end
+    describe 'review button' do
+      before(:each) do
+        yesterday = 1.day.ago
+        @order = create(:completed_order, user: @user, created_at: yesterday)
+        @cancelled_order = create(:cancelled_order, user: @user, created_at: yesterday)
+        @oi_1 = create(:fulfilled_order_item, order: @order, item: @item_1, price: 1, quantity: 3, created_at: yesterday, updated_at: yesterday)
+        @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 5, created_at: yesterday, updated_at: 2.hours.ago)
+        @oi_3 = create(:fulfilled_order_item, order: @cancelled_order, item: @item_1, price: 1, quantity: 3)
+        @oi_4 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 3)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      end
+      it 'displays review button on order show page' do
+        visit profile_order_path(@order)
+        within("#oitem-#{@oi_1.id}") do
+          click_button "Leave a Review"
+        end
+        expect(current_path).to eq(new_item_review_path(@item_1))
+      end
+      it 'doesnt show review button if order was cancelled' do
+        visit profile_order_path(@cancelled_order)
+        expect(page).to_not have_css("#new-review")
+      end
+      it 'doesnt show review button if order item wasnt fulfilled' do
+        visit profile_order_path(@order)
+        within("#oitem-#{@oi_4.id}") do
+          expect(page).to_not have_css("#new-review")
+        end
+      end
+    end
+
     describe 'allows me to cancel an order that is not yet complete' do
       before :each do
         @item = create(:item, user: @merchant_1, inventory: 100)
