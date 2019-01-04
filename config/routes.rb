@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: 'welcome#index'
 
   resources :items, only: [:index, :show] do
-    resources :reviews
+    resources :reviews, except: :index
   end
   resources :merchants, only: [:index]
 

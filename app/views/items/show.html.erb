@@ -11,3 +11,12 @@ Merchant is out of stock, sorry
 
 <p>Average time to fulfill: <%= fulfillment_time(@item.avg_fulfillment_time) %>
 <% end %>
+
+<div class="reviews">
+  <h1><%= @item.name %>'s Reviews</h1>
+  <% @item.reviews.each_with_index do |r, idx| %>
+    <h5>Review <%= idx + 1 %>: "<%= r.title %>" - <%=  pluralize(r.rating, "star") %></h5>
+    <p>by: <%= r.user.name %></p>
+    <p id="review-description"> "<%= r.description %>" </p>
+  <% end %>
+</div>
