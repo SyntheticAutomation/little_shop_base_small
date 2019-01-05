@@ -23,6 +23,7 @@ class Profile::OrdersController < ApplicationController
 
   def show
     @order = Order.find(params[:id])
+    @current_user = current_user
   end
 
   def destroy

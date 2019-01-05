@@ -92,4 +92,13 @@ describe 'A registered user who visits our web app' do
     expect(current_path).to eq(item_review_path(@item_1, @review))
     expect(page).to_not have_content("Delete Review")
   end
+  it 'cannot leave a review on an order item if they already have' do
+    @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
+
+    visit profile_order_path(@order)
+
+    within("#oitem-#{@oi_1.id}") do
+      expect(page).to_not have_button("Leave Review")
+    end
+  end
 end
