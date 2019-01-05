@@ -4,4 +4,9 @@
 <% if @current_user == @review.user %>
   <%= button_to "Edit Review", edit_item_review_path(@item, @review), method: :get %>
   <%= link_to "Delete Review", item_review_path(@item, @review), method: :delete %>
+  <% if !@review.visibility %>
+    <%= button_to "Enable", enable_item_review_path(@item, @review), method: :patch %>
+    <% elsif @review.visibility %>
+    <%= button_to "Disable", disable_item_review_path(@item, @review), method: :patch %>
+  <% end %>
 <% end %>

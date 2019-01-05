@@ -1,0 +1,16 @@
+<% @reviews.each do |r| %>
+  <h5><%= link_to "#{r.title}", item_review_path(r.item, r), method: :get %> - <%=  pluralize(r.rating, "star") %></h5>
+  <% if !r.visibility %>
+  <p>(hidden)</p>
+  <% end %>
+  <p><%= r.rating %></p>
+  <p><%= r.description %></p>
+  <p><%= r.created_at %></p>
+  <%= button_to "Edit Review", edit_item_review_path(r.item, r), method: :get %>
+  <%= link_to "Delete Review", item_review_path(r.item, r), method: :delete %>
+  <% if !r.visibility %>
+    <%= button_to "Enable", enable_item_review_path(r.item, r), method: :patch %>
+  <% elsif r.visibility %>
+    <%= button_to "Disable", disable_item_review_path(r.item, r), method: :patch %>
+  <% end %>
+<% end %>

@@ -1,5 +1,9 @@
 class ReviewsController < ApplicationController
 
+  def index
+    @reviews = Review.where(user: current_user)
+  end
+
   def new
     @item = Item.find(params[:item_id])
     @review = Review.new
@@ -56,7 +60,25 @@ class ReviewsController < ApplicationController
     redirect_to item_path(@item)
   end
 
+  def enable
+    flash[:notice] = "This review is now visible. To make it hidden, click the Disable button."
+    set_visibility(true)
+  end
+
+  def disable
+    flash[:notice] = "This review has been hidden. To make it visible again, click the Enable button."
+    set_visibility(false)
+  end
+
   private
+
+  def set_visibility(value)
+    review = Review.find(params[:id])
+    item = review.item
+    review.visibility = value
+    review.save
+    redirect_to item_review_path(item, review)
+  end
 
   def review_params
     params.require(:review).permit(:title, :description, :item_id, :rating)

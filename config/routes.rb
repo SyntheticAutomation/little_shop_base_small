@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :show] do
     resources :reviews, except: :index
   end
+  patch '/items/:item_id/reviews/:id/enable', to: 'reviews#enable', as: 'enable_item_review'
+  patch '/items/:item_id/reviews/:id/disable', to: 'reviews#disable', as: 'disable_item_review'
   resources :merchants, only: [:index]
 
   get '/cart', to: 'cart#index'
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
   namespace :profile do
     resources :orders, only: [:index, :create, :show, :destroy]
   end
+  get '/profile/reviews', to: 'reviews#index', as: 'profile_reviews'
 
   post '/admin/users/:merchant_id/items', to: 'dashboard/items#create', as: 'admin_user_items'
   patch '/admin/users/:merchant_id/items/:id', to: 'dashboard/items#update', as: 'admin_user_item'

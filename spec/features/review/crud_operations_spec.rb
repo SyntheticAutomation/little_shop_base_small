@@ -101,4 +101,39 @@ describe 'A registered user who visits our web app' do
       expect(page).to_not have_button("Leave Review")
     end
   end
+  it 'can access their own review index page' do
+    @review_1 = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
+    @review_2 = Review.create(title: "Garbage...", rating: 1, description: "my review goes here blah blah", item: @item_2, user: @user)
+
+    visit profile_path
+
+    click_on "My Reviews"
+    expect(current_path).to eq(profile_reviews_path)
+
+    expect(page).to have_content(@review_1.title)
+    expect(page).to have_content(@review_2.description)
+  end
+  it 'can disable/enable a review' do
+    @review_1 = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user, visibility: false)
+    @review_2 = Review.create(title: "Garbage...", rating: 1, description: "my review goes here blah blah", item: @item_2, user: @user)
+
+    visit profile_reviews_path
+    click_link @review_1.title
+
+    expect(current_path).to eq(item_review_path(@item_1, @review_1))
+    expect(page).to have_button("Enable")
+    expect(page).to_not have_button("Disable")
+
+    click_button "Enable"
+    expect(current_path).to eq(item_review_path(@item_1, @review_1))
+    expect(page).to have_content("This review is now visible. To make it hidden, click the Disable button.")
+    expect(page).to have_button("Disable")
+    expect(page).to_not have_button("Enable")
+
+    click_button "Disable"
+    expect(current_path).to eq(item_review_path(@item_1, @review_1))
+    expect(page).to have_content("This review has been hidden. To make it visible again, click the Enable button.")
+    expect(page).to have_button("Enable")
+    expect(page).to_not have_button("Disable")
+  end
 end
