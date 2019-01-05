@@ -73,4 +73,23 @@ describe 'A registered user who visits our web app' do
     expect(current_path).to eq(item_review_path(@item_1, @review))
     expect(page).to_not have_content("Edit Review")
   end
+  it 'can delete a review' do
+    @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
+    visit item_path(@item_1)
+    click_link(@review.title)
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+
+    click_on("Delete Review")
+    expect(current_path).to eq(item_path(@item_1))
+    expect(page).to_not have_content(@review.description)
+    expect(page).to have_content("The review was successfully deleted.")
+  end
+  it 'cannot delete other peoples reviews' do
+    @user_1 = create(:user)
+    @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user_1)
+    visit item_path(@item_1)
+    click_link(@review.title)
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+    expect(page).to_not have_content("Delete Review")
+  end
 end
