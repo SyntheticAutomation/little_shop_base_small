@@ -3,7 +3,8 @@
   <% if !r.visibility %>
   <p>(hidden)</p>
   <% end %>
-  <p><%= r.rating %></p>
+  <p>Item: <%= link_to "#{r.item.name}", item_path(r.item), method: :get %></p>
+
   <p><%= r.description %></p>
   <p><%= r.created_at %></p>
   <%= button_to "Edit Review", edit_item_review_path(r.item, r), method: :get %>
