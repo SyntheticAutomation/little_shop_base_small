@@ -101,4 +101,13 @@ describe 'A registered user who visits our web app' do
       expect(page).to_not have_button("Leave Review")
     end
   end
+  it 'can access their own review index page' do
+    @review_1 = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
+    @review_2 = Review.create(title: "Garbage...", rating: 1, description: "my review goes here blah blah", item: @item_2, user: @user)
+
+    visit profile_reviews_path
+    expect(page).to have_content(@review_1.title)
+    expect(page).to have_content(@review_2.description)
+  end
+
 end

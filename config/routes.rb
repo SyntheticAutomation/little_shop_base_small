@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   namespace :profile do
     resources :orders, only: [:index, :create, :show, :destroy]
   end
+  get '/profile/reviews', to: 'reviews#index', as: 'profile_reviews'
 
   post '/admin/users/:merchant_id/items', to: 'dashboard/items#create', as: 'admin_user_items'
   patch '/admin/users/:merchant_id/items/:id', to: 'dashboard/items#update', as: 'admin_user_item'
