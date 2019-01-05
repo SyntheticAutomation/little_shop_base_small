@@ -3,4 +3,5 @@
 <p id="review-description"> "<%= @review.description %>" </p>
 <% if @current_user == @review.user %>
   <%= button_to "Edit Review", edit_item_review_path(@item, @review), method: :get %>
+  <%= link_to "Delete Review", item_review_path(@item, @review), method: :delete %>
 <% end %>
