@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :show] do
     resources :reviews, except: :index
   end
+  patch '/items/:item_id/reviews/:id/enable', to: 'reviews#enable', as: 'enable_item_review'
+  patch '/items/:item_id/reviews/:id/disable', to: 'reviews#disable', as: 'disable_item_review'
   resources :merchants, only: [:index]
 
   get '/cart', to: 'cart#index'
