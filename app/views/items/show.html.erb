@@ -12,14 +12,16 @@ Merchant is out of stock, sorry
 <p>Average time to fulfill: <%= fulfillment_time(@item.avg_fulfillment_time) %>
 <% end %>
 
-<div class="reviews">
-  <h1>Reviews</h1>
-  <% @reviews.each_with_index do |r, idx| %>
-    <h5>Review <%= idx + 1 %>: <%= link_to "#{r.title}", item_review_path(@item, r), method: :get %> - <%=  pluralize(r.rating, "star") %></h5>
-    <p>by: <%= r.user.name %></p>
-    <p id="review-description"> "<%= r.description %>" </p>
-  <% end %>
-</div>
+<% unless @reviews.empty? %>
+  <div class="reviews">
+    <h1>Reviews</h1>
+    <% @reviews.each_with_index do |r, idx| %>
+      <h5>Review <%= idx + 1 %>: <%= link_to "#{r.title}", item_review_path(@item, r), method: :get %> - <%=  pluralize(r.rating, "star") %></h5>
+      <p>by: <%= r.user.name %></p>
+      <p id="review-description"> "<%= r.description %>" </p>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @user && !@hidden_reviews.empty? %>
   <div class="hidden-reviews"><h1> Hidden Reviews </h1>
