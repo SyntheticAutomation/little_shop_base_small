@@ -77,7 +77,8 @@ class ReviewsController < ApplicationController
     item = review.item
     review.visibility = value
     review.save
-    redirect_to item_review_path(item, review)
+    redirect_to item_review_path(item, review) unless current_user.admin?
+    redirect_to item_path(item) if current_user.admin?
   end
 
   def review_params
