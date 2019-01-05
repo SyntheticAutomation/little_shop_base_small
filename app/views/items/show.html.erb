@@ -20,3 +20,18 @@ Merchant is out of stock, sorry
     <p id="review-description"> "<%= r.description %>" </p>
   <% end %>
 </div>
+
+<% if @user && !@hidden_reviews.empty? %>
+  <div class="hidden-reviews"><h1> Hidden Reviews </h1>
+    <% @hidden_reviews.each_with_index do |r, idx| %>
+      <h5>Review <%= idx + 1 %>: <%= link_to "#{r.title}", item_review_path(@item, r), method: :get %> - <%=  pluralize(r.rating, "star") %></h5>
+      <p>by: <%= r.user.name %></p>
+      <p> "<%= r.description %>" </p>
+      <% if !r.visibility %>
+        <%= button_to "Enable", enable_item_review_path(r.item, r), method: :patch %>
+      <% elsif r.visibility %>
+        <%= button_to "Disable", disable_item_review_path(r.item, r), method: :patch %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

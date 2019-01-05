@@ -8,6 +8,7 @@ class ItemsController < ApplicationController
   def show
     @item = Item.find(params[:id])
     @reviews = Review.where(item: @item, visibility: true)
-    @user = current_user
+    @hidden_reviews = Review.where(item: @item, visibility: false)
+    @user = current_user if current_admin?
   end
 end

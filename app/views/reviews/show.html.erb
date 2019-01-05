@@ -2,7 +2,7 @@
 <p>by: <%= @review.user.name %></p>
 <p>Item: <%= link_to "#{@review.item.name}", item_path(@review.item), method: :get %></p>
 <p id="review-description"> "<%= @review.description %>" </p>
-<% if @current_user == @review.user %>
+<% if @current_user == @review.user || @current_user.admin? %>
   <%= button_to "Edit Review", edit_item_review_path(@item, @review), method: :get %>
   <%= link_to "Delete Review", item_review_path(@item, @review), method: :delete %>
   <% if !@review.visibility %>
