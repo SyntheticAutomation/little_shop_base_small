@@ -1,6 +1,6 @@
 <% @reviews.each do |r| %>
-  <%= r.title %>
-  <%= r.rating %>
-  <%= r.description %>
-  <%= r.created_at %>
+  <h5><%= link_to "#{r.title}", item_review_path(r.item, r), method: :get %> - <%=  pluralize(r.rating, "star") %></h5>
+  <p><%= r.rating %></p>
+  <p><%= r.description %></p>
+  <p><%= r.created_at %></p>
   <% end %>
