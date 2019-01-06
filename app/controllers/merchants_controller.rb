@@ -28,6 +28,7 @@ class MerchantsController < ApplicationController
     @most_items_user = @merchant.most_items_user
     @top_3_revenue_users = @merchant.top_3_revenue_users
     @having_problems = @merchant.problems_with_fulfillment?
+    @low_stock_items = @merchant.low_stock_items
   end
 
   private

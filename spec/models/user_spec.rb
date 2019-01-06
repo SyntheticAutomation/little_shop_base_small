@@ -175,11 +175,11 @@ RSpec.describe User, type: :model do
       before(:each) do
         @user = create(:user)
         @merchant = create(:merchant)
-        @item_1 = create(:item, user: @merchant)
-        @item_2 = create(:item, user: @merchant)
-        @item_3 = create(:item, user: @merchant)
-        @item_4 = create(:item, user: @merchant)
-        @item_5 = create(:item, user: @merchant)
+        @item_1 = create(:item, user: @merchant, inventory: 9999)
+        @item_2 = create(:item, user: @merchant, inventory: 9999)
+        @item_3 = create(:item, user: @merchant, inventory: 9999)
+        @item_4 = create(:item, user: @merchant, inventory: 9999)
+        @item_5 = create(:item, user: @merchant, inventory: 9999)
         @order_1 = create(:order)
         @order_2 = create(:order)
         @order_3 = create(:order)
@@ -196,6 +196,11 @@ RSpec.describe User, type: :model do
       end
       it '.unfulfilled_orders_cost' do
         expect(number_to_currency(@merchant.unfulfilled_orders_cost)).to eq("$500.00")
+      end
+      it '.low_stock_items' do
+        item_6 = create(:item, user: @merchant, inventory: 3)
+        oi_6 = create(:fulfilled_order_item, order: @order_5, item: item_6, price: 100, quantity: 1)
+        expect(@merchant.low_stock_items.first).to eq(item_6)
       end
     end
   end

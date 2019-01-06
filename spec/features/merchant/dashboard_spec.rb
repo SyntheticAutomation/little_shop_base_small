@@ -276,26 +276,33 @@ RSpec.describe 'Merchant Dashboard page' do
     it 'shows to-do list features: revenue impact of unfulfilled orders' do
       user = create(:user)
       merchant = create(:merchant)
-      item_1 = create(:item, user: merchant)
-      item_2 = create(:item, user: merchant)
-      item_3 = create(:item, user: merchant)
-      item_4 = create(:item, user: merchant)
-      item_5 = create(:item, user: merchant)
+      item_1 = create(:item, user: merchant, inventory: 9999)
+      item_2 = create(:item, user: merchant, inventory: 9999)
+      item_3 = create(:item, user: merchant, inventory: 9999)
+      item_4 = create(:item, user: merchant, inventory: 9999)
+      item_5 = create(:item, user: merchant, inventory: 9999)
+      item_6 = create(:item, user: merchant, inventory: 3)
       order_1 = create(:order)
       order_2 = create(:order)
       order_3 = create(:order)
       order_4 = create(:order)
       order_5 = create(:order)
-      oi_1 = create(:order_item, order: order_1, item: item_1, price: 100, quantity: 100)
-      oi_2 = create(:order_item, order: order_2, item: item_1, price: 100, quantity: 100)
-      oi_3 = create(:order_item, order: order_3, item: item_1, price: 100, quantity: 100)
-      oi_4 = create(:order_item, order: order_4, item: item_1, price: 100, quantity: 100)
-      oi_5 = create(:order_item, order: order_5, item: item_1, price: 100, quantity: 100)
+      oi_1 = create(:order_item, order: order_1, item: item_1, price: 100, quantity: 1)
+      oi_2 = create(:order_item, order: order_2, item: item_1, price: 100, quantity: 1)
+      oi_3 = create(:order_item, order: order_3, item: item_1, price: 100, quantity: 1)
+      oi_4 = create(:order_item, order: order_4, item: item_1, price: 100, quantity: 1)
+      oi_5 = create(:order_item, order: order_5, item: item_6, price: 100, quantity: 1)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
 
       visit dashboard_path
 
-      expect(page).to have_content("You have 5 orders waiting to be fulfilled. Together they are worth $500.00")
+      expect(page).to have_content("You have 5 orders waiting to be fulfilled. Together they are worth $500.00 in revenue!")
+      within("#restock-alert") do
+        expect(page).to have_content("You now have less than 100 #{item_6.name} in stock.")
+        expect(page).to have_button("Restock")
+        click_button "Restock"
+        expect(current_path).to eq(edit_dashboard_item_path(item_6))
+      end
     end
   end
 end

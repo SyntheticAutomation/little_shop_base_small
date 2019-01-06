@@ -124,4 +124,8 @@ class User < ApplicationRecord
       .sum("order_items.price")
   end
 
+  def low_stock_items
+    Item.where(user: self).where("inventory < ?", 100)
+  end
+
 end
