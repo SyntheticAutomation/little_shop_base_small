@@ -115,7 +115,7 @@ Open your browser and explore this url:
 - Merchants now see a to-do list, which tracks:
   - if they have a high cancellation rate
   - the revenue impact of their unfulfilled orders
-  - items in their inventory that are low and need to be restocked
+  - items in their inventory that are low and need to be restocked, and provides a restocking button
 
 ## Running the tests
 
