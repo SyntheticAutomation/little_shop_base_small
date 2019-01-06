@@ -10,5 +10,6 @@ class ItemsController < ApplicationController
     @reviews = Review.where(item: @item, visibility: true)
     @hidden_reviews = Review.where(item: @item, visibility: false)
     @user = current_user if current_admin?
+    @avg_rating = @item.average_rating
   end
 end
