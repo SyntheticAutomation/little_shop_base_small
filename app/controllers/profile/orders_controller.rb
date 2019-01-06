@@ -23,6 +23,9 @@ class Profile::OrdersController < ApplicationController
 
   def show
     @order = Order.find(params[:id])
+    unless current_user == @order.user
+      render file: 'public/404', status: 404
+    end
     @current_user = current_user
   end
 
