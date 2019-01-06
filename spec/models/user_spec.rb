@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 RSpec.describe User, type: :model do
   describe 'validations' do
     it { should validate_presence_of :email }
@@ -195,12 +196,52 @@ RSpec.describe User, type: :model do
         expect(@merchant.problems_with_fulfillment?).to eq(true)
       end
       it '.unfulfilled_orders_cost' do
-        expect(number_to_currency(@merchant.unfulfilled_orders_cost)).to eq("$500.00")
+        expect(@merchant.unfulfilled_orders_cost).to eq(500)
       end
       it '.low_stock_items' do
         item_6 = create(:item, user: @merchant, inventory: 3)
         oi_6 = create(:fulfilled_order_item, order: @order_5, item: item_6, price: 100, quantity: 1)
         expect(@merchant.low_stock_items.first).to eq(item_6)
+      end
+    end
+    describe 'to-do list alert instance methods' do
+      before(:each) do
+        @user = create(:user)
+        @merchant = create(:merchant)
+        @item1 = create(:item, user: @merchant, inventory: 9999)
+        @item2 = create(:item, user: @merchant, inventory: 9999)
+        @item3 = create(:item, user: @merchant, inventory: 9999)
+        @item4 = create(:item, user: @merchant, inventory: 9999)
+        @item5 = create(:item, user: @merchant, inventory: 9999)
+        @item6 = create(:item, user: @merchant, inventory: 3)
+        @order1 = create(:order, user: @user)
+        @order2 = create(:order, user: @user)
+        @order3 = create(:order, user: @user)
+        @order4 = create(:order, user: @user)
+        @order5 = create(:order, user: @user)
+        @order6 = create(:cancelled_order, user: @user)
+        @order7 = create(:cancelled_order, user: @user)
+        @order8 = create(:cancelled_order, user: @user)
+        @order9 = create(:cancelled_order, user: @user)
+        oi1 = create(:order_item, order: @order1, item: @item1, price: 100, quantity: 1)
+        oi2 = create(:order_item, order: @order2, item: @item1, price: 100, quantity: 1)
+        oi3 = create(:order_item, order: @order3, item: @item1, price: 100, quantity: 1)
+        oi4 = create(:order_item, order: @order4, item: @item1, price: 100, quantity: 1)
+        oi5 = create(:order_item, order: @order5, item: @item6, price: 100, quantity: 1)
+        oi6 = create(:order_item, order: @order6, item: @item3, price: 100, quantity: 1)
+        oi7 = create(:order_item, order: @order7, item: @item3, price: 100, quantity: 1)
+        oi8 = create(:order_item, order: @order8, item: @item3, price: 100, quantity: 1)
+        oi9 = create(:order_item, order: @order9, item: @item3, price: 100, quantity: 1)
+      end
+      it '.cancellation_rate' do
+        expect(@merchant.cancellation_rate).to eq(44.44)
+      end
+      it '.cancellations' do
+        expect(@merchant.cancellations).to eq(4)
+      end
+      it '.all_my_orders' do
+
+        expect(@merchant.all_my_orders.count).to eq(9)
       end
     end
   end

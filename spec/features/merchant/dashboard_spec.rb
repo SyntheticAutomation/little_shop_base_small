@@ -273,7 +273,7 @@ RSpec.describe 'Merchant Dashboard page' do
         end
       end
     end
-    it 'shows to-do list features: revenue impact of unfulfilled orders' do
+    it 'shows to-do list features' do
       user = create(:user)
       merchant = create(:merchant)
       item_1 = create(:item, user: merchant, inventory: 9999)
@@ -282,16 +282,24 @@ RSpec.describe 'Merchant Dashboard page' do
       item_4 = create(:item, user: merchant, inventory: 9999)
       item_5 = create(:item, user: merchant, inventory: 9999)
       item_6 = create(:item, user: merchant, inventory: 3)
-      order_1 = create(:order)
-      order_2 = create(:order)
-      order_3 = create(:order)
-      order_4 = create(:order)
-      order_5 = create(:order)
+      order_1 = create(:order, user: user)
+      order_2 = create(:order, user: user)
+      order_3 = create(:order, user: user)
+      order_4 = create(:order, user: user)
+      order_5 = create(:order, user: user)
+      order_6 = create(:cancelled_order, user: user)
+      order_7 = create(:cancelled_order, user: user)
+      order_8 = create(:cancelled_order, user: user)
+      order_9 = create(:cancelled_order, user: user)
       oi_1 = create(:order_item, order: order_1, item: item_1, price: 100, quantity: 1)
       oi_2 = create(:order_item, order: order_2, item: item_1, price: 100, quantity: 1)
       oi_3 = create(:order_item, order: order_3, item: item_1, price: 100, quantity: 1)
       oi_4 = create(:order_item, order: order_4, item: item_1, price: 100, quantity: 1)
       oi_5 = create(:order_item, order: order_5, item: item_6, price: 100, quantity: 1)
+      oi_6 = create(:order_item, order: order_6, item: item_3, price: 100, quantity: 1)
+      oi_7 = create(:order_item, order: order_7, item: item_3, price: 100, quantity: 1)
+      oi_8 = create(:order_item, order: order_8, item: item_3, price: 100, quantity: 1)
+      oi_9 = create(:order_item, order: order_9, item: item_3, price: 100, quantity: 1)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
 
       visit dashboard_path
@@ -302,6 +310,11 @@ RSpec.describe 'Merchant Dashboard page' do
         expect(page).to have_button("Restock")
         click_button "Restock"
         expect(current_path).to eq(edit_dashboard_item_path(item_6))
+      end
+      visit dashboard_path
+
+      within("#high-cancellation-alert") do
+        expect(page).to have_content("Your cancellation rate is 44.44%. You should schedule a meeting to discuss with management.")
       end
     end
   end
