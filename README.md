@@ -4,9 +4,10 @@
 A Turing School solo project created with Ruby on Rails.
 
 ![LittleShop](/readme/landing.png)
-
 This project was an extension to our group project, Little Shop:
+
 `https://github.com/cebarks/littleshop`
+
 However, we were given a fresh code base for this round, so that the focus could simply be on the back-end extensions we were assigned to engineer. The fresh code base can be found at:
 `fresh code base link`
 
