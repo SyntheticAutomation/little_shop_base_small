@@ -126,7 +126,7 @@ class User < ApplicationRecord
   end
 
   def low_stock_items
-    Item.where(user: self).where("inventory < ?", 100)
+    Item.where(user: self).where("inventory < ?", 100).where(active: true)
   end
 
   def cancellation_rate
