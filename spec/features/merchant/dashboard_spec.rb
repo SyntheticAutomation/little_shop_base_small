@@ -280,22 +280,17 @@ RSpec.describe 'Merchant Dashboard page' do
       item_2 = create(:item, user: merchant)
       item_3 = create(:item, user: merchant)
       item_4 = create(:item, user: merchant)
-      item_5 = create(:item, user: merchant)
-      order_1 = create(:order)
-      order_2 = create(:order)
-      order_3 = create(:order)
-      order_4 = create(:order)
-      order_5 = create(:order)
-      oi_1 = create(:order_item, order: order_1, item: item_1, price: 100, quantity: 100)
-      oi_2 = create(:order_item, order: order_2, item: item_1, price: 100, quantity: 100)
-      oi_3 = create(:order_item, order: order_3, item: item_1, price: 100, quantity: 100)
-      oi_4 = create(:order_item, order: order_4, item: item_1, price: 100, quantity: 100)
-      oi_5 = create(:order_item, order: order_5, item: item_1, price: 100, quantity: 100)
+      item_5 = create(:item, user: merchant, inventory: 3)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
 
       visit dashboard_path
 
       expect(page).to have_content("You have 5 orders waiting to be fulfilled. Together they are worth $500.00")
+      within("#restock-alert")
+        expect(page).to have_content("#{item_5.name} is low.")
+        expect(page).to have_button("Restock")
+        click_button "Restock"
+        expect(current_path).to eq(edit_dashboard_item(item_5))
     end
   end
 end
