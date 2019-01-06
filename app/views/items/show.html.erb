@@ -10,6 +10,8 @@ Merchant is out of stock, sorry
 <% end %>
 
 <p>Average time to fulfill: <%= fulfillment_time(@item.avg_fulfillment_time) %>
+<p>Reviews: <%= @reviews.count %>
+<p>Average Rating: <%=  pluralize(@avg_rating, "star") %></p>
 <% end %>
 
 <% unless @reviews.empty? %>

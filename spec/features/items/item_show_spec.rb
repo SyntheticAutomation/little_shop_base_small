@@ -12,6 +12,7 @@ RSpec.describe 'Item show page', type: :feature do
     @order = create(:completed_order, user: @user)
     create(:fulfilled_order_item, order: @order, item: @item, created_at: 4.days.ago, updated_at: 3.days.ago)
     create(:fulfilled_order_item, order: @order, item: @item, created_at: 1.hour.ago, updated_at: 30.minutes.ago)
+    @review_1 = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item, user: @user)
   end
   it 'should hide Add To Cart button if inventory is 0' do
     visit item_path(@item_2)
@@ -47,6 +48,8 @@ RSpec.describe 'Item show page', type: :feature do
         expect(page).to have_content("Price: #{number_to_currency(@item.price)}")
         expect(page).to have_content("In stock: #{@item.inventory}")
         expect(page).to have_content("Average time to fulfill: 12 hours, 15 minutes")
+        expect(page).to have_content("Reviews: 1")
+        expect(page).to have_content("Average Rating: 5 stars")
       end
     end
   end
