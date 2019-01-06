@@ -67,5 +67,15 @@ RSpec.describe Item, type: :model do
       expect(item_1.ever_ordered?).to eq(true)
       expect(item_2.ever_ordered?).to eq(false)
     end
+    it '.average_rating' do
+      user = create(:user)
+      item_1 = create(:item)
+      item_2 = create(:item)
+      order = create(:completed_order, user: user)
+      create(:fulfilled_order_item, order: order, item: item_1, created_at: 4.days.ago, updated_at: 1.days.ago)
+      review_1 = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: item_1, user: user)
+
+      expect(item_1.average_rating).to eq(5)
+    end
   end
 end
