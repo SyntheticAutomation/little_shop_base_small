@@ -221,5 +221,12 @@ RSpec.describe 'Profile Orders page', type: :feature do
         expect(page).to have_content("In stock: 125")
       end
     end
+    it 'cannot navigate to other users orders' do
+      user_2 = create(:user)
+      order_1 = create(:order, user: user_2)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      visit profile_order_path(order_1)
+      expect(page.status_code).to eq(404)
+    end
   end
 end
