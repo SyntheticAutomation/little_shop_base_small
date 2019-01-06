@@ -8,6 +8,14 @@
   <% end %>
 <% end %>
 
+<div class="to-do">
+  <section id="unfulfilled-orders-alert">
+    <% if @having_problems %>
+    <p>You have <%= @merchant.my_pending_orders.count %> orders waiting to be fulfilled. Together they are worth <%= number_to_currency(@merchant.unfulfilled_orders_cost) %></p>
+    <% end %>
+  </section>
+</div>
+
 <% if current_admin? %>
 <%= link_to 'My Items', admin_merchant_items_path(@merchant) %>
 <% else %>

@@ -113,4 +113,15 @@ class User < ApplicationRecord
       .order('revenue desc')
       .limit(3)
   end
+
+  def problems_with_fulfillment?
+    my_pending_orders.count > 3
+  end
+
+  def unfulfilled_orders_cost
+    Order.joins(order_items: :item)
+      .where("items.merchant_id=? AND orders.status=? AND order_items.fulfilled=?", self.id, 0, false)
+      .sum("order_items.price")
+  end
+
 end
