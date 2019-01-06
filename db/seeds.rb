@@ -63,6 +63,18 @@ create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
 order = create(:order, user: user_1)
 create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
 
+#lazy_merchant's cancelled orders
+order = create(:cancelled_order, user: user_2)
+create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
+order = create(:cancelled_order, user: user_2)
+create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
+order = create(:cancelled_order, user: user_2)
+create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
+order = create(:cancelled_order, user: user_2)
+create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
+order = create(:cancelled_order, user: user_2)
+create(:order_item, order: order, item: item_5, price: 2800, quantity: 70)
+
 Review.create(item: item_1, user: user_1, title: Faker::Commerce.product_name, description: Faker::MichaelScott.quote, rating: Faker::Number.between(1, 5))
 Review.create(item: item_2, user: user_2, title: Faker::Commerce.product_name, description: Faker::MichaelScott.quote, rating: Faker::Number.between(1, 5))
 Review.create(item: item_3, user: user_3, title: Faker::Commerce.product_name, description: Faker::MichaelScott.quote, rating: Faker::Number.between(1, 5))
