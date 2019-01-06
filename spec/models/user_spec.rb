@@ -171,5 +171,32 @@ RSpec.describe User, type: :model do
         expect(@merchant.top_3_revenue_users[2].revenue).to eq(120)
       end
     end
+    describe 'fulfillment instance methods' do
+      before(:each) do
+        @user = create(:user)
+        @merchant = create(:merchant)
+        @item_1 = create(:item, user: @merchant)
+        @item_2 = create(:item, user: @merchant)
+        @item_3 = create(:item, user: @merchant)
+        @item_4 = create(:item, user: @merchant)
+        @item_5 = create(:item, user: @merchant)
+        @order_1 = create(:order)
+        @order_2 = create(:order)
+        @order_3 = create(:order)
+        @order_4 = create(:order)
+        @order_5 = create(:order)
+        @oi_1 = create(:order_item, order: @order_1, item: @item_1, price: 100, quantity: 100)
+        @oi_2 = create(:order_item, order: @order_2, item: @item_1, price: 100, quantity: 100)
+        @oi_3 = create(:order_item, order: @order_3, item: @item_1, price: 100, quantity: 100)
+        @oi_4 = create(:order_item, order: @order_4, item: @item_1, price: 100, quantity: 100)
+        @oi_5 = create(:order_item, order: @order_5, item: @item_1, price: 100, quantity: 100)
+      end
+      it '.problems_with_fulfillment?' do
+        expect(@merchant.problems_with_fulfillment?).to eq(true)
+      end
+      it '.unfulfilled_orders_cost' do
+        expect(number_to_currency(@merchant.unfulfilled_orders_cost)).to eq("$500.00")
+      end
+    end
   end
 end

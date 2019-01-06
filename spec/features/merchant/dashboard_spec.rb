@@ -273,8 +273,29 @@ RSpec.describe 'Merchant Dashboard page' do
         end
       end
     end
-  end
+    it 'shows to-do list features: revenue impact of unfulfilled orders' do
+      user = create(:user)
+      merchant = create(:merchant)
+      item_1 = create(:item, user: merchant)
+      item_2 = create(:item, user: merchant)
+      item_3 = create(:item, user: merchant)
+      item_4 = create(:item, user: merchant)
+      item_5 = create(:item, user: merchant)
+      order_1 = create(:order)
+      order_2 = create(:order)
+      order_3 = create(:order)
+      order_4 = create(:order)
+      order_5 = create(:order)
+      oi_1 = create(:order_item, order: order_1, item: item_1, price: 100, quantity: 100)
+      oi_2 = create(:order_item, order: order_2, item: item_1, price: 100, quantity: 100)
+      oi_3 = create(:order_item, order: order_3, item: item_1, price: 100, quantity: 100)
+      oi_4 = create(:order_item, order: order_4, item: item_1, price: 100, quantity: 100)
+      oi_5 = create(:order_item, order: order_5, item: item_1, price: 100, quantity: 100)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
 
-  context 'as an admin' do
+      visit dashboard_path
+
+      expect(page).to have_content("You have 5 orders waiting to be fulfilled. Together they are worth $500.00")
+    end
   end
 end
