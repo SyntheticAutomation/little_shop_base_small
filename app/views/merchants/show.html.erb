@@ -32,6 +32,15 @@
   </div>
 <% end %>
 
+<% if @any_cancellations %>
+  <div id="high-cancellation-alert"">
+    <div class="alert alert-warning" role="alert">
+      <p>Your cancellation rate is <%= @cancellation_rate  %>%. If you continue to cancel orders as frequently as you are, your account may be placed under review or suspended. </p>
+    </div>
+  </div>
+<% end %>
+
+
 <div class="dropdown-divider"></div>
 
 <% if current_admin? %>

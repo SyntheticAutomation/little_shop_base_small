@@ -122,10 +122,22 @@ class User < ApplicationRecord
     Order.joins(order_items: :item)
       .where("items.merchant_id=? AND orders.status=? AND order_items.fulfilled=?", self.id, 0, false)
       .sum("order_items.price")
+      .to_i
   end
 
   def low_stock_items
-    Item.where(user: self).where("inventory < ?", 100)
+    Item.where(user: self).where("inventory < ?", 100).where(active: true)
   end
 
+  def cancellation_rate
+    ((cancellations / all_my_orders.count.to_f) * 100).round(2) if cancellations > 0 && all_my_orders.count > 0
+  end
+
+  def cancellations
+    Order.joins(order_items: :item).where("items.merchant_id=? AND orders.status=?", id, 2).count
+  end
+
+  def all_my_orders
+    Order.joins(order_items: :item).where("items.merchant_id=?", id)
+  end
 end
