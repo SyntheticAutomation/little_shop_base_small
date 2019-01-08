@@ -106,6 +106,13 @@ RSpec.describe User, type: :model do
       expect(merchant.inventory_check(item.id)).to eq(item.inventory)
     end
 
+    it '.items_with_placeholders' do
+      user = create(:merchant)
+      item = create(:item, user: user, image: "https://picsum.photos/200/300/?image=524")
+
+      expect(user.items_with_placeholders.first).to eq(item)
+    end
+
     describe 'merchant stats methods' do
       before :each do
         @user_1 = create(:user, city: 'Springfield', state: 'MO')
@@ -208,12 +215,14 @@ RSpec.describe User, type: :model do
       before(:each) do
         @user = create(:user)
         @merchant = create(:merchant)
+        @merchant2 = create(:merchant)
         @item1 = create(:item, user: @merchant, inventory: 9999)
         @item2 = create(:item, user: @merchant, inventory: 9999)
         @item3 = create(:item, user: @merchant, inventory: 9999)
         @item4 = create(:item, user: @merchant, inventory: 9999)
         @item5 = create(:item, user: @merchant, inventory: 9999)
         @item6 = create(:item, user: @merchant, inventory: 3)
+        @item7 = create(:item, user: @merchant2, inventory: 50000)
         @order1 = create(:order, user: @user)
         @order2 = create(:order, user: @user)
         @order3 = create(:order, user: @user)
@@ -238,9 +247,9 @@ RSpec.describe User, type: :model do
       end
       it '.cancellations' do
         expect(@merchant.cancellations).to eq(4)
+        expect(@merchant2.cancellations).to eq(0)
       end
       it '.all_my_orders' do
-
         expect(@merchant.all_my_orders.count).to eq(9)
       end
     end

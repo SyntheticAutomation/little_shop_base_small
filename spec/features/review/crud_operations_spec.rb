@@ -41,6 +41,24 @@ describe 'A registered user who visits our web app' do
     expect(current_path).to eq(item_path(@item_1))
     expect(page).to have_content(description)
   end
+  it 'cant leave a review with incomplete information' do
+    description = "gendiobpshutigohbsifopg!!!!!nviovprei"
+    rating = 5
+    visit profile_order_path(@order)
+
+    within("#oitem-#{@oi_1.id}") do
+      click_button "Leave a Review"
+      expect(current_path).to eq(new_item_review_path(@item_1))
+    end
+
+    fill_in :review_description, with: description
+    fill_in :review_rating, with: rating
+
+    click_button 'Create Review'
+
+    expect(current_path).to eq(item_reviews_path(@item_1))
+    expect(page).to have_content("prohibited this review from being saved")
+  end
   it 'can edit a review' do
     @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
     visit item_path(@item_1)
@@ -72,6 +90,25 @@ describe 'A registered user who visits our web app' do
     click_link(@review.title)
     expect(current_path).to eq(item_review_path(@item_1, @review))
     expect(page).to_not have_content("Edit Review")
+  end
+  it 'cant update a review with incomplete information' do
+    @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
+    visit item_path(@item_1)
+
+    click_link(@review.title)
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+
+    click_button("Edit Review")
+    expect(current_path).to eq(edit_item_review_path(@item_1, @review))
+
+    rating = "something that isn't a number"
+
+    fill_in :review_rating, with: rating
+
+    click_on ("Update Review")
+
+    expect(current_path).to eq(item_review_path(@item_1, @review))
+    expect(page).to have_content("prohibited this review from being saved")
   end
   it 'can delete a review' do
     @review = Review.create(title: "Amazing product!", rating: 5, description: "fgnribtdufbgiu feowapghi goeiwgbhigl932409htgibn", item: @item_1, user: @user)
