@@ -314,7 +314,7 @@ RSpec.describe 'Merchant Dashboard page' do
       visit dashboard_path
 
       within("#high-cancellation-alert") do
-        expect(page).to have_content("Your cancellation rate is 44.44%. If you continue to cancel orders as frequently as you are, your account may be placed under review.")
+        expect(page).to have_content("Your customers are cancelling at a rate of 44.44%. You may want to investigate.")
       end
     end
   end
