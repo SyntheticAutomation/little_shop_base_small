@@ -119,7 +119,7 @@ Open your browser and explore this url:
 
 ## Running the tests
 
-Your location should be the root directory of the project (`little_shop`).
+Your location should be the root directory of the project (`little_shop_base_small`).
 
 From the command line run
 
