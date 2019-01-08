@@ -44,6 +44,6 @@ class Item < ApplicationRecord
   end
 
   def average_rating
-    Review.where(item_id: id).average(:rating).to_i
+    Review.where(item_id: id, visibility: true).average(:rating).to_i
   end
 end

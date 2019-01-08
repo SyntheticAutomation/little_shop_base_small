@@ -23,5 +23,16 @@ RSpec.describe OrderItem, type: :model do
 
       expect(oi.subtotal).to eq(15)
     end
+    it '.reviewable?' do
+      item = create(:item)
+      user = create(:user)
+      order = create(:order, user: user)
+      oi = create(:order_item, quantity: 5, price: 3, item: item, order: order)
+
+      expect(oi.reviewable?(user)).to eq(true)
+
+      review = item.reviews.create(title: "boibhi", description: "fgorihbtoi", rating: 1, user: user)
+      expect(oi.reviewable?(user)).to eq(false)
+    end
   end
 end

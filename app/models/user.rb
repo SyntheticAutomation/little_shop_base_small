@@ -140,4 +140,9 @@ class User < ApplicationRecord
   def all_my_orders
     Order.joins(order_items: :item).where("items.merchant_id=?", id)
   end
+
+  def items_with_placeholders
+    Item.where(user: self).where(image: "https://picsum.photos/200/300/?image=524")
+  end
+
 end

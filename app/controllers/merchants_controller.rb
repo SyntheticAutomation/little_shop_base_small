@@ -29,6 +29,7 @@ class MerchantsController < ApplicationController
     @top_3_revenue_users = @merchant.top_3_revenue_users
     @having_problems = @merchant.problems_with_fulfillment?
     @low_stock_items = @merchant.low_stock_items
+    @placeholders = @merchant.items_with_placeholders
     if @orders
       @cancellation_rate = @merchant.cancellation_rate
     else

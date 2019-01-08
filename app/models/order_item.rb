@@ -14,4 +14,13 @@ class OrderItem < ApplicationRecord
   def subtotal
     quantity * price
   end
+
+  def reviewable?(current_user)
+    if self.item.reviews.any? {|review| review.user == current_user}
+      false
+    else
+      true
+    end
+  end
+
 end
