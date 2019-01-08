@@ -9,8 +9,10 @@
 <% end %>
 
 <div class="to-do">
+  <h1>To Do:</h1>
+  <div class="dropdown-divider"></div>
   <% if @placeholders %>
-  <div class="placeholders-alert">
+  <div class="alert alert-warning" role="alert">
     <% @placeholders.each do |item| %>
       <p><%= item.name %> is using a default placeholder image. Please add an image URL for your product by clicking here:</p>
       <%= button_to "Add Image", edit_dashboard_item_path(item), method: :get %>
@@ -19,8 +21,6 @@
   <% end %>
 
   <% if @having_problems || @low_stock_items %>
-  <div class="dropdown-divider"></div>
-  <h1>To Do:</h1>
   <% end %>
   <section id="unfulfilled-orders-alert">
     <% if @having_problems %>
