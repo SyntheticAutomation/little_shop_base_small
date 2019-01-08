@@ -116,6 +116,7 @@ Open your browser and explore this url:
   - if they have a high cancellation rate
   - the revenue impact of their unfulfilled orders
   - items in their inventory that are low and need to be restocked, and provides a restocking button
+  - items which are using a default placeholder image, and provides a button to edit the item
 
 ## Running the tests
 
